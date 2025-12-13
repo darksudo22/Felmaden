@@ -1,27 +1,32 @@
 "use client";
 
 import React, { useState } from 'react';
-import { BookOpen, FileText, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import { BookOpen, FileText, Sparkles, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 // --- Feature Card Component (Helper) ---
 interface FeatureCardProps {
   icon: React.ReactNode;
-  title: string;
-  desc: string;
-  descFa: string;
+  titleFa: string; // Title is now Persian
+  descFa: string;  // Description is now Persian
+  keyFeature: string; // The English key feature name (e.g., PDF Chat)
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, desc, descFa }) => {
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, titleFa, descFa, keyFeature }) => {
   return (
     <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors">
       <div className="bg-slate-800/50 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-slate-200 mb-2">{title}</h3>
-      <p className="text-slate-400 text-sm mb-3 leading-relaxed">{desc}</p>
-      {/* RTL Text */}
-      <p className="text-slate-500 text-xs font-light border-t border-slate-800 pt-3" dir="rtl">{descFa}</p>
+      
+      {/* Title - Set to RTL/Persian */}
+      <h3 dir="rtl" className="text-lg font-semibold text-slate-200 mb-2">{titleFa}</h3>
+      
+      {/* Description - Set to RTL/Persian */}
+      <p dir="rtl" className="text-slate-400 text-sm mb-3 leading-relaxed">{descFa}</p>
+      
+      {/* English Key Feature for clarity/indexing */}
+      <p className="text-slate-500 text-xs font-light border-t border-slate-800 pt-3">{keyFeature}</p>
     </div>
   );
 };
@@ -46,15 +51,12 @@ export default function LandingPage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            // Formspree expects the data field (in this case, 'email')
             body: JSON.stringify({ email: email, product: "Persian Academic Copilot Waitlist" }), 
         });
 
         if (response.ok) {
-            // Success response from Formspree
             setIsSubmitted(true);
         } else {
-            // Handle error (e.g., if Formspree sends back an error code)
             console.error('Formspree submission failed:', response.status);
             alert('Submission failed. Please try again or contact support.');
         }
@@ -81,15 +83,15 @@ export default function LandingPage() {
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-screen">
         
-        {/* Callout Badge */}
+        {/* Callout Badge (Customized) */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium"
         >
-          <Sparkles className="w-4 h-4" />
-          <span>The Academic AI for Farsi</span>
+          <Zap className="w-4 h-4" /> {/* Changed icon to Zap for a tech vibe */}
+          <span>Version : Beta 0.1</span> {/* NEW TEXT HERE */}
         </motion.div>
 
         {/* Hero Headline */}
@@ -167,7 +169,7 @@ export default function LandingPage() {
           )}
         </motion.div>
 
-        {/* Feature Grid */}
+        {/* Feature Grid (Now fully Persian) */}
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -176,21 +178,21 @@ export default function LandingPage() {
         >
           <FeatureCard 
             icon={<FileText className="w-6 h-6 text-indigo-400" />}
-            title="Chat with PDF"
-            desc="Upload papers and ask questions in Persian. Summarize literature instantly."
-            descFa="با مقالات انگلیسی چت کنید و پاسخ فارسی بگیرید."
+            titleFa="چت با اسناد PDF"
+            descFa="مقالات و منابع انگلیسی خود را آپلود کرده و سوالات علمی خود را به فارسی بپرسید."
+            keyFeature="PDF Chat & Summarization"
           />
           <FeatureCard 
             icon={<BookOpen className="w-6 h-6 text-blue-400" />}
-            title="Smart Citations"
-            desc="Auto-generate APA/MLA citations. Never worry about formatting again."
-            descFa="تولید خودکار رفرنس‌دهی استاندارد."
+            titleFa="رفرنس‌دهی هوشمند"
+            descFa="تولید خودکار و سریع منابع و استنادات (APA، MLA، و غیره) بدون نگرانی بابت خطا."
+            keyFeature="Smart Citation Generation"
           />
           <FeatureCard 
             icon={<Sparkles className="w-6 h-6 text-purple-400" />}
-            title="Writer's Block"
-            desc="AI auto-complete that understands Persian academic tone and grammar."
-            descFa="تکمیل خودکار جملات با لحن علمی و رسمی."
+            titleFa="دستیار نوشتاری علمی"
+            descFa="تکمیل خودکار جملات و پاراگراف‌ها با رعایت کامل لحن رسمی و گرامر فارسی."
+            keyFeature="Academic Writing Assistant"
           />
         </motion.div>
 
