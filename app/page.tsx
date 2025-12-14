@@ -198,7 +198,7 @@ export default function LandingPage() {
 
         {/* Footer */}
         <footer className="mt-24 text-slate-600 text-sm">
-          <p>© 2024 [Your Chosen Name] Academic Copilot. Made for students.</p>
+          <p>© 2024 KIREKHAR Academic Copilot. Made for students.</p>
         </footer>
 
       </main>
