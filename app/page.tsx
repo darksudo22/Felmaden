@@ -1,74 +1,49 @@
 "use client";
 
 import React, { useState } from 'react';
-import { BookOpen, FileText, Sparkles, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
+import { BookOpen, FileText, Sparkles, CheckCircle2, ChevronLeft, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// --- Feature Card Component ---
+// --- کارت ویژگی‌ها (Feature Card) ---
 interface FeatureCardProps {
   icon: React.ReactNode;
-  titleFa: string; // Persian Title
-  descFa: string;  // Persian Description
-  keyFeature: string; // English Tag
+  title: string;
+  description: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, titleFa, descFa, keyFeature }) => {
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
   return (
-    <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl hover:border-slate-700 transition-colors">
-      <div className="bg-slate-800/50 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+    <div className="bg-black/40 border border-orange-900/30 p-6 rounded-2xl hover:border-orange-500/50 transition-all duration-300 group text-right">
+      <div className="bg-orange-950/50 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-900/50 transition-colors">
         {icon}
       </div>
-      
-      {/* Title - Right-to-Left (Persian) */}
-      <h3 dir="rtl" className="text-lg font-bold text-slate-200 mb-2">{titleFa}</h3>
-      
-      {/* Description - Right-to-Left (Persian) */}
-      <p dir="rtl" className="text-slate-400 text-sm mb-3 leading-relaxed">{descFa}</p>
-      
-      {/* English Key Feature Tag */}
-      <p className="text-slate-500 text-xs font-light border-t border-slate-800 pt-3 uppercase tracking-wider">
-        {keyFeature}
-      </p>
+      <h3 className="text-xl font-bold text-orange-50 mb-3">{title}</h3>
+      <p className="text-orange-200/70 text-sm leading-relaxed">{description}</p>
     </div>
   );
 };
 
-// --- Main Landing Page Component ---
+// --- کامپوننت اصلی صفحه فرود ---
 export default function LandingPage() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // --- Form Submission Logic ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-
     setIsLoading(true);
-
     try {
-        // Your specific Formspree endpoint
+        // لینک فرم‌اسپری شما
         const response = await fetch('https://formspree.io/f/xpwvbbbd', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              email: email, 
-              source: "Persian Copilot Beta Waitlist" 
-            }), 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, source: "نسخه بتا - تم نارنجی" }), 
         });
-
-        if (response.ok) {
-            setIsSubmitted(true);
-        } else {
-            console.error('Submission failed');
-            alert('Something went wrong. Please try again.');
-        }
-
+        if (response.ok) setIsSubmitted(true);
+        else alert('مشکلی پیش آمد. لطفا دوباره تلاش کنید.');
     } catch (error) {
-        console.error('Error:', error);
-        alert('Network error. Please check your connection.');
+        alert('خطای شبکه. لطفا اتصال خود را بررسی کنید.');
     } finally {
         setIsLoading(false);
         setEmail('');
@@ -76,130 +51,129 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+    // تنظیم جهت صفحه به راست-به-چپ (RTL)
+    <div dir="rtl" className="min-h-screen bg-[#0a0a0a] text-orange-50 font-sans selection:bg-orange-500/30 selection:text-orange-100 overflow-x-hidden">
       
-      {/* Ambient Background Glow */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/20 rounded-full blur-[128px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[128px]" />
+      {/* نورهای پس‌زمینه */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex justify-center items-center overflow-hidden">
+        <div className="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-orange-600/20 rounded-full blur-[150px] opacity-70" />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-red-700/10 rounded-full blur-[150px] opacity-60" />
       </div>
 
-      <main className="relative z-10 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-screen">
+      <main className="relative z-10 max-w-5xl mx-auto px-6 py-16 flex flex-col items-center text-center min-h-[90vh] justify-center">
         
-        {/* Version Badge */}
+        {/* بج نسخه */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wide"
+          className="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-950/50 border border-orange-500/30 text-orange-400 text-sm font-bold shadow-[0_0_15px_rgba(249,115,22,0.2)]"
         >
-          <Zap className="w-3 h-3" />
-          <span>Version : Beta 0.1</span>
+          <Zap className="w-4 h-4 fill-orange-400" />
+          <span className="tracking-wide">نسخه: بتا ۰.۱</span>
         </motion.div>
 
-        {/* Hero Section */}
-        <div className="text-center space-y-6 max-w-3xl">
+        {/* تیتر اصلی */}
+        <div className="space-y-6 max-w-4xl">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400"
+            className="text-4xl md:text-7xl font-extrabold tracking-tight leading-tight"
           >
-            The First AI Copilot for <br/>
-            <span className="text-indigo-400">Persian Academic Writing</span>
+            اولین دستیار هوش مصنوعی برای <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 drop-shadow-[0_2px_10px_rgba(249,115,22,0.5)]">
+              پژوهش و نگارش آکادمیک فارسی
+            </span>
           </motion.h1>
 
-          {/* Persian Subtitle */}
+          {/* زیرتیتر */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            dir="rtl" 
-            className="text-lg md:text-xl text-slate-400 leading-relaxed font-light"
+            className="text-xl text-orange-200/80 leading-8 font-light max-w-2xl mx-auto"
           >
-            پایان‌نامه و مقالات خود را ۱۰ برابر سریع‌تر بنویسید. <br className="hidden md:block"/>
-            چت با PDF، اصلاح متون فارسی، و مدیریت منابع — همه با هوش مصنوعی.
+            سرعت نگارش پایان‌نامه و مقالات خود را ۱۰ برابر کنید. با اسناد PDF چت کنید، متون را به فارسی روان بازنویسی کنید و منابع را مدیریت کنید—همه با قدرت Gemini.
           </motion.p>
         </div>
 
-        {/* Signup Form */}
+        {/* فرم ثبت‌نام */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="w-full max-w-md mt-12"
+          className="w-full max-w-md mt-14"
         >
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
+              {/* افکت درخشش دور فرم */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
               
-              <div className="relative flex items-center bg-slate-900 rounded-lg p-2 border border-slate-800">
+              <div className="relative flex items-center p-1.5 bg-black border border-orange-900/50 rounded-xl shadow-2xl">
                 <input 
                   type="email" 
                   required
-                  placeholder="name@university.edu" 
+                  placeholder="ایمیل دانشگاهی خود را وارد کنید..." 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 bg-transparent border-none text-white placeholder-slate-500 focus:ring-0 px-4 py-2 outline-none"
+                  className="flex-1 bg-transparent border-none text-orange-50 placeholder-orange-300/50 focus:ring-0 px-4 py-3 outline-none text-right w-full"
                 />
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-6 py-3 rounded-lg font-bold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg whitespace-nowrap"
                 >
-                  {isLoading ? 'Joining...' : 'Join Beta'}
-                  {!isLoading && <ChevronRight className="w-4 h-4" />}
+                  {isLoading ? 'در حال ثبت...' : 'عضویت در بتا'}
+                  {!isLoading && <ChevronLeft className="w-5 h-5" />}
                 </button>
               </div>
-              <p className="mt-3 text-xs text-center text-slate-500">
-                Limited to first 500 students. Free during beta.
+              <p className="mt-4 text-sm text-orange-300/60">
+                ظرفیت محدود به ۵۰۰ نفر اول. رایگان در دوره بتا.
               </p>
             </form>
           ) : (
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-500/10 border border-green-500/20 text-green-200 p-6 rounded-xl text-center flex flex-col items-center gap-3"
+              className="bg-orange-950/30 border border-orange-500/30 p-8 rounded-2xl flex flex-col items-center gap-4 text-orange-50"
             >
-              <CheckCircle2 className="w-8 h-8 text-green-400" />
+              <CheckCircle2 className="w-12 h-12 text-orange-500 drop-shadow-[0_0_10px_rgba(249,115,22,0.6)]" />
               <div>
-                <h3 dir="rtl" className="font-bold text-lg">ثبت نام با موفقیت انجام شد!</h3>
-                <p className="text-sm text-green-200/70">We will email you when your access is ready.</p>
+                <h3 className="font-bold text-2xl mb-2">ثبت‌نام شما با موفقیت انجام شد!</h3>
+                <p className="text-orange-200/70">به محض آماده شدن دسترسی، ایمیلی برای شما ارسال خواهیم کرد.</p>
               </div>
             </motion.div>
           )}
         </motion.div>
 
-        {/* Feature Grid (Persian Boxes) */}
+        {/* کارت‌های ویژگی‌ها */}
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="grid md:grid-cols-3 gap-6 mt-20 w-full"
+          className="grid md:grid-cols-3 gap-8 mt-24 w-full"
         >
           <FeatureCard 
-            icon={<FileText className="w-6 h-6 text-indigo-400" />}
-            titleFa="چت با اسناد PDF"
-            descFa="مقالات انگلیسی خود را آپلود کنید و خلاصه و پاسخ سوالات خود را به زبان فارسی دریافت کنید."
-            keyFeature="PDF CHAT & SUMMARIZATION"
+            icon={<FileText className="w-7 h-7 text-orange-400" />}
+            title="چت هوشمند با PDF"
+            description="مقالات انگلیسی را آپلود کنید. هوش مصنوعی آن‌ها را می‌خواند و به هر سوالی که به فارسی بپرسید، با ذکر منبع پاسخ می‌دهد."
           />
           <FeatureCard 
-            icon={<BookOpen className="w-6 h-6 text-blue-400" />}
-            titleFa="رفرنس‌دهی هوشمند"
-            descFa="تولید خودکار منابع به فرمت‌های APA، MLA و شیکاگو بدون نگرانی از اشتباهات نگارشی."
-            keyFeature="SMART CITATIONS"
+            icon={<BookOpen className="w-7 h-7 text-orange-400" />}
+            title="دستیار رفرنس‌دهی خودکار"
+            description="دیگر نگران فرمت منابع نباشید. تمام استنادات درون‌متنی و لیست منابع (APA, MLA) به صورت خودکار تولید می‌شود."
           />
           <FeatureCard 
-            icon={<Sparkles className="w-6 h-6 text-purple-400" />}
-            titleFa="دستیار نگارش علمی"
-            descFa="بازنویسی متون، اصلاح گرامر و پیشنهاد جملات آکادمیک برای بهبود کیفیت پایان‌نامه."
-            keyFeature="ACADEMIC WRITING ASSISTANT"
+            icon={<Sparkles className="w-7 h-7 text-orange-400" />}
+            title="نگارش علمی و بازنویسی"
+            description="متون خود را به لحن رسمی و آکادمیک تبدیل کنید. گرامر فارسی را اصلاح کنید و پاراگراف‌های منسجم بنویسید."
           />
         </motion.div>
 
-        {/* Footer */}
-        <footer className="mt-24 text-slate-600 text-sm">
-          <p>© 2024 Persian Academic Copilot. Built for students.</p>
+        {/* فوتر */}
+        <footer className="mt-32 pt-8 border-t border-orange-900/30 text-orange-300/50 text-sm w-full">
+          <p>© ۱۴۰۳ دستیار هوش مصنوعی آکادمیک. ساخته شده برای دانشجویان ایران.</p>
         </footer>
 
       </main>
