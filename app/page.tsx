@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import { BookOpen, FileText, Sparkles, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// --- Feature Card Component (Helper) ---
+// --- Feature Card Component ---
 interface FeatureCardProps {
   icon: React.ReactNode;
-  titleFa: string; // Title is now Persian
-  descFa: string;  // Description is now Persian
-  keyFeature: string; // The English key feature name (e.g., PDF Chat)
+  titleFa: string; // Persian Title
+  descFa: string;  // Persian Description
+  keyFeature: string; // English Tag
 }
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, titleFa, descFa, keyFeature }) => {
@@ -19,14 +19,16 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, titleFa, descFa, keyFea
         {icon}
       </div>
       
-      {/* Title - Set to RTL/Persian */}
-      <h3 dir="rtl" className="text-lg font-semibold text-slate-200 mb-2">{titleFa}</h3>
+      {/* Title - Right-to-Left (Persian) */}
+      <h3 dir="rtl" className="text-lg font-bold text-slate-200 mb-2">{titleFa}</h3>
       
-      {/* Description - Set to RTL/Persian */}
+      {/* Description - Right-to-Left (Persian) */}
       <p dir="rtl" className="text-slate-400 text-sm mb-3 leading-relaxed">{descFa}</p>
       
-      {/* English Key Feature for clarity/indexing */}
-      <p className="text-slate-500 text-xs font-light border-t border-slate-800 pt-3">{keyFeature}</p>
+      {/* English Key Feature Tag */}
+      <p className="text-slate-500 text-xs font-light border-t border-slate-800 pt-3 uppercase tracking-wider">
+        {keyFeature}
+      </p>
     </div>
   );
 };
@@ -37,7 +39,7 @@ export default function LandingPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // *** FORM SUBMISSION FUNCTION WITH FORMSPREE INTEGRATION ***
+  // --- Form Submission Logic ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
@@ -45,37 +47,38 @@ export default function LandingPage() {
     setIsLoading(true);
 
     try {
-        // Your Formspree URL is directly used here
+        // Your specific Formspree endpoint
         const response = await fetch('https://formspree.io/f/xpwvbbbd', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: email, product: "Persian Academic Copilot Waitlist" }), 
+            body: JSON.stringify({ 
+              email: email, 
+              source: "Persian Copilot Beta Waitlist" 
+            }), 
         });
 
         if (response.ok) {
             setIsSubmitted(true);
         } else {
-            console.error('Formspree submission failed:', response.status);
-            alert('Submission failed. Please try again or contact support.');
+            console.error('Submission failed');
+            alert('Something went wrong. Please try again.');
         }
 
     } catch (error) {
-        console.error('Network error during submission:', error);
-        alert('A network error occurred. Please check your connection.');
+        console.error('Error:', error);
+        alert('Network error. Please check your connection.');
     } finally {
         setIsLoading(false);
         setEmail('');
     }
   };
-  // *** END OF MODIFIED FUNCTION ***
-
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white overflow-x-hidden">
       
-      {/* Background decoration elements */}
+      {/* Ambient Background Glow */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-indigo-600/20 rounded-full blur-[128px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600/20 rounded-full blur-[128px]" />
@@ -83,30 +86,30 @@ export default function LandingPage() {
 
       <main className="relative z-10 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-screen">
         
-        {/* Callout Badge (Customized) */}
+        {/* Version Badge */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium"
+          className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-wide"
         >
-          <Zap className="w-4 h-4" /> {/* Changed icon to Zap for a tech vibe */}
-          <span>Version : Beta 0.1</span> {/* NEW TEXT HERE */}
+          <Zap className="w-3 h-3" />
+          <span>Version : Beta 0.1</span>
         </motion.div>
 
-        {/* Hero Headline */}
+        {/* Hero Section */}
         <div className="text-center space-y-6 max-w-3xl">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400"
+            className="text-4xl md:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400"
           >
             The First AI Copilot for <br/>
             <span className="text-indigo-400">Persian Academic Writing</span>
           </motion.h1>
 
-          {/* Persian Subtitle (RTL) */}
+          {/* Persian Subtitle */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -119,7 +122,7 @@ export default function LandingPage() {
           </motion.p>
         </div>
 
-        {/* Waitlist Form */}
+        {/* Signup Form */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -128,7 +131,6 @@ export default function LandingPage() {
         >
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="relative group">
-              {/* Blur effect for visual pop */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-75 transition duration-200"></div>
               
               <div className="relative flex items-center bg-slate-900 rounded-lg p-2 border border-slate-800">
@@ -154,7 +156,6 @@ export default function LandingPage() {
               </p>
             </form>
           ) : (
-            // Success Message
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -162,14 +163,14 @@ export default function LandingPage() {
             >
               <CheckCircle2 className="w-8 h-8 text-green-400" />
               <div>
-                <h3 className="font-bold text-lg">You're on the list! / ثبت شد</h3>
+                <h3 dir="rtl" className="font-bold text-lg">ثبت نام با موفقیت انجام شد!</h3>
                 <p className="text-sm text-green-200/70">We will email you when your access is ready.</p>
               </div>
             </motion.div>
           )}
         </motion.div>
 
-        {/* Feature Grid (Now fully Persian) */}
+        {/* Feature Grid (Persian Boxes) */}
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -179,26 +180,26 @@ export default function LandingPage() {
           <FeatureCard 
             icon={<FileText className="w-6 h-6 text-indigo-400" />}
             titleFa="چت با اسناد PDF"
-            descFa="مقالات و منابع انگلیسی خود را آپلود کرده و سوالات علمی خود را به فارسی بپرسید."
-            keyFeature="PDF Chat & Summarization"
+            descFa="مقالات انگلیسی خود را آپلود کنید و خلاصه و پاسخ سوالات خود را به زبان فارسی دریافت کنید."
+            keyFeature="PDF CHAT & SUMMARIZATION"
           />
           <FeatureCard 
             icon={<BookOpen className="w-6 h-6 text-blue-400" />}
             titleFa="رفرنس‌دهی هوشمند"
-            descFa="تولید خودکار و سریع منابع و استنادات (APA، MLA، و غیره) بدون نگرانی بابت خطا."
-            keyFeature="Smart Citation Generation"
+            descFa="تولید خودکار منابع به فرمت‌های APA، MLA و شیکاگو بدون نگرانی از اشتباهات نگارشی."
+            keyFeature="SMART CITATIONS"
           />
           <FeatureCard 
             icon={<Sparkles className="w-6 h-6 text-purple-400" />}
-            titleFa="دستیار نوشتاری علمی"
-            descFa="تکمیل خودکار جملات و پاراگراف‌ها با رعایت کامل لحن رسمی و گرامر فارسی."
-            keyFeature="Academic Writing Assistant"
+            titleFa="دستیار نگارش علمی"
+            descFa="بازنویسی متون، اصلاح گرامر و پیشنهاد جملات آکادمیک برای بهبود کیفیت پایان‌نامه."
+            keyFeature="ACADEMIC WRITING ASSISTANT"
           />
         </motion.div>
 
         {/* Footer */}
         <footer className="mt-24 text-slate-600 text-sm">
-          <p>© 2024 [Your Chosen Name] Academic Copilot. Made for students.</p>
+          <p>© 2024 Persian Academic Copilot. Built for students.</p>
         </footer>
 
       </main>
