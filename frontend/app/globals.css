@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  /* Default to the dark theme variables */
+  --foreground-rgb: 255, 247, 237; /* Matches text-orange-50 */
+  --background-rgb: 10, 10, 10;    /* Matches bg-[#0a0a0a] */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  /* Smooth font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Optional: Custom Orange Scrollbar for Chrome/Edge/Safari --- */
+/* This gives the scrollbar a sleek dark/orange look */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a; /* Deep black background */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #431407; /* Dark orange handle */
+  border-radius: 5px;
+  border: 2px solid #0a0a0a; /* Spacing */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ea580c; /* Bright orange on hover */
+}
+
+/* Remove default blue highlight on mobile when clicking buttons */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
