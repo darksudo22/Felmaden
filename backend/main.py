@@ -4,6 +4,7 @@ from pypdf import PdfReader
 import io
 import rag_pipeline
 from pydantic import BaseModel
+from typing import List, Optional # Add these imports
 
 app = FastAPI()
 
@@ -16,8 +17,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 1. Update the Request Model
+class Message(BaseModel):
+    role: str
+    content: str
+
 class ChatRequest(BaseModel):
     query: str
+    history: List[Message] = [] # New field for memory
     user_id: str = "default_user"
 
 @app.get("/")
@@ -27,7 +34,12 @@ def read_root():
 @app.post("/chat")
 def chat_endpoint(request: ChatRequest):
     print(f"💬 [SERVER] Chat Request: {request.query}")
-    response = rag_pipeline.query_rag(request.query)
+    
+    # We convert the Pydantic models to simple dictionaries for the pipeline
+    history_dict = [{"role": m.role, "content": m.content} for m in request.history]
+    
+    response = rag_pipeline.query_rag(request.query, history_dict)
+    
     print("💬 [SERVER] Sending Answer...")
     return {"answer": response}
 
